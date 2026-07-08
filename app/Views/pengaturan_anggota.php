@@ -145,12 +145,12 @@
 
 <script>
 function openModal() {
-    document.getElementById('modal-overlay').classList.add('active');
-    document.getElementById('modal-panel').classList.add('active');
+    document.getElementById('modal-overlay').classList.add('show');
+    document.getElementById('modal-panel').classList.add('show');
 }
 function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('active');
-    document.getElementById('modal-panel').classList.remove('active');
+    document.getElementById('modal-overlay').classList.remove('show');
+    document.getElementById('modal-panel').classList.remove('show');
     document.getElementById('f-identitas').value = '';
     document.getElementById('f-nama').value = '';
     document.getElementById('f-telp').value = '';
