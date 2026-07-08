@@ -30,6 +30,18 @@ class PengaturanController extends BaseController
         return view('pengaturan_anggota', $data);
     }
 
+    public function storeAnggota()
+    {
+        $anggotaModel = new AnggotaModel();
+        $anggotaModel->insert([
+            'no_identitas' => $this->request->getPost('no_identitas'),
+            'nama' => $this->request->getPost('nama'),
+            'no_telp' => $this->request->getPost('no_telp'),
+            'alamat' => $this->request->getPost('alamat')
+        ]);
+        return $this->response->setJSON(['status' => 'success']);
+    }
+
     public function deleteAnggota()
     {
         $anggotaModel = new AnggotaModel();

@@ -76,8 +76,9 @@
     <header class="topbar">
       <div>
         <h1 class="page-title">Kelola Anggota</h1>
-        <p class="page-sub">Hapus keanggotaan pengguna jika diperlukan</p>
+        <p class="page-sub"><?= count($anggota) ?> anggota terdaftar</p>
       </div>
+      <button class="btn btn-primary" onclick="openModal()">+ Tambah Anggota</button>
     </header>
 
     <div class="content">
@@ -107,7 +108,74 @@
     </div>
   </div>
 </div>
+<!-- MODAL TAMBAH ANGGOTA -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+<div class="modal-panel" id="modal-panel">
+  <div class="modal-head">
+    <div class="modal-title">Pendaftaran Anggota Baru</div>
+    <button class="modal-close" onclick="closeModal()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="form-label">No. Identitas / KTP / KK <span class="req">*</span></label>
+      <input type="text" id="f-identitas" class="form-input" placeholder="Masukkan nomor identitas" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Nama Lengkap <span class="req">*</span></label>
+      <input type="text" id="f-nama" class="form-input" placeholder="Sesuai KTP" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">No. Telepon / WhatsApp <span class="req">*</span></label>
+      <input type="text" id="f-telp" class="form-input" placeholder="08..." />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Alamat Lengkap</label>
+      <textarea id="f-alamat" class="form-input form-textarea" placeholder="Dusun, RT/RW..."></textarea>
+    </div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-secondary" onclick="closeModal()">Batal</button>
+    <button class="btn btn-primary" onclick="tambahAnggota()">Simpan</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">Anggota berhasil didaftarkan!</div>
+
 <script>
+function openModal() {
+    document.getElementById('modal-overlay').classList.add('active');
+    document.getElementById('modal-panel').classList.add('active');
+}
+function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('active');
+    document.getElementById('modal-panel').classList.remove('active');
+    document.getElementById('f-identitas').value = '';
+    document.getElementById('f-nama').value = '';
+    document.getElementById('f-telp').value = '';
+    document.getElementById('f-alamat').value = '';
+}
+function tambahAnggota() {
+    const identitas = document.getElementById('f-identitas').value.trim();
+    const nama = document.getElementById('f-nama').value.trim();
+    const telp = document.getElementById('f-telp').value.trim();
+    const alamat = document.getElementById('f-alamat').value.trim();
+    if (!identitas || !nama || !telp) { alert('Harap isi semua field wajib.'); return; }
+    const formData = new FormData();
+    formData.append('no_identitas', identitas);
+    formData.append('nama', nama);
+    formData.append('no_telp', telp);
+    formData.append('alamat', alamat);
+    fetch('/pengaturan/anggota/store', { method: 'POST', body: formData })
+    .then(res => res.json())
+    .then(res => {
+        closeModal();
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); location.reload(); }, 1500);
+    });
+}
 function hapusAnggota(id) {
     if(confirm('Apakah Anda yakin ingin menghapus anggota ini secara permanen?')) {
         const formData = new FormData();

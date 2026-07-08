@@ -24,6 +24,7 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
         $routes->get('kategori', 'PengaturanController::kategori');
         $routes->post('kategori', 'PengaturanController::storeKategori');
         $routes->get('anggota', 'PengaturanController::anggota');
+        $routes->post('anggota/store', 'PengaturanController::storeAnggota');
         $routes->post('anggota/update', 'PengaturanController::updateAnggota');
         $routes->post('anggota/delete', 'PengaturanController::deleteAnggota');
     });
